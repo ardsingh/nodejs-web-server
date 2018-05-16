@@ -22,9 +22,11 @@ app.use((req, res, next) => {
     next();
 });
 
+/*
 app.use((req, res, next) => {
     res.render('maintenance.hbs');
 });
+*/
 
 app.use(express.static(__dirname + '/public')); 
 
@@ -51,6 +53,12 @@ app.get('/about', (req, res) => {
     //res.send('<h1>Hello Express!</h1>');
     res.render('about.hbs', {
         pageTitle: 'About Page'
+    });
+});
+
+app.get('/projects', (req, res) => {
+    res.render('projects.hbs', {
+        pageTitle: 'Projects'
     });
 });
 
