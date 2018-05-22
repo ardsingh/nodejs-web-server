@@ -20,6 +20,7 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', { useNewUrlParser: true
     
     // this return cursor.toArray() return a promise object.
     //db.collection('Todos').find({completed: true}).toArray().then((docs) => {
+
     // for other function, look at cursor section
     db.collection('Todos').find({
         _id: new ObjectID('5b034a813c09c3438313eddc')
@@ -29,6 +30,22 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', { useNewUrlParser: true
     }, (err) => {
         console.log('Unable to fetch Todos object', err);
     });
+
+    // Todos and todos are different
+    db.collection('todos').find().toArray().then((docs) => {
+        console.log('Todos All documents');
+        console.log(JSON.stringify(docs, undefined, 2));
+    }, (err) => {
+        console.log('Unable to fetch Todos object', err);
+    });
+
+    db.collection('Users').find().toArray().then((docs) => {
+        console.log('Users All documents');
+        console.log(JSON.stringify(docs, undefined, 2));
+    }, (err) => {
+        console.log('Unable to fetch Users object', err);
+    });
+
 
     db.collection('Todos').find().count().then((count) => {
         console.log(`Todos documents ${count}`);

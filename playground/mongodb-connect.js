@@ -19,7 +19,7 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', { useNewUrlParser: true
     console.log('Connected to MongoDB server');
     db.collection('Todos').insertOne({
         text: 'Walk the dog',
-        completed: true
+        completed: false
     }, (err, result) => {
         if (err) {
             return console.log('Unable to insert todo', err);
@@ -30,9 +30,9 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', { useNewUrlParser: true
 
     db.collection('Users').insertOne({
         // id : 123,
-        name: 'Andrew',
-        age: 44,
-        location: 'NC'
+        name: 'Ardhendu',
+        age: 25,
+        location: 'RTP'
     }, (err, result) => {
         if (err) {
             return console.log('Unable to insert todo', err);

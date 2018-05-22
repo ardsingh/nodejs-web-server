@@ -1,0 +1,75 @@
+var mongoose = require('mongoose');
+
+// there are many promise library to choose from that mongoose can work with.
+// Specify which promise library you want to work with.
+// we are going to use the built-in promise library as oppose to third party library
+mongoose.Promise = global.Promise;
+
+mongoose.connect('mongodb://localhost:27017/TodoApp');
+
+// create some 'do' model
+var Todo = mongoose.model('Todos', {
+    text: {
+        type: String,
+        required: true,
+        minlength:5,
+        trim:true
+    },
+    completed: {
+        type: Boolean,
+        default: false
+    },
+    completedAt: {
+        type: Number,
+        default: null
+    }
+});
+
+var newTodo = new Todo({
+    text: '   cook dinner  '
+});
+
+newTodo.save().then(
+    (doc) => {
+        console.log('Saved Todo', doc);
+    }, 
+    (err) => {
+        console.log('Unable to save Todo');
+});
+
+var User = mongoose.model('Users', {
+    email: {
+        type: String,
+        required: true,
+        minlength:5,
+        trim:true
+    }
+});
+
+var newUser = new User({
+    email: '   abc@hotmail.com  '
+});
+
+newUser.save().then(
+    (doc) => {
+        console.log('Saved User', doc);
+    }, 
+    (err) => {
+        console.log('Unable to save User');
+});
+
+/*
+var newnewTodo = new Todo({
+    text: 'Cook dinner',
+    completed: true,
+    completedAt: 23
+});
+
+newnewTodo.save().then(
+    (doc) => {
+        console.log('Saved Todo', doc);
+    }, 
+    (err) => {
+        console.log('Unable to save Todo');
+});
+*/
