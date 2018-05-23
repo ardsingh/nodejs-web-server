@@ -7,6 +7,7 @@ var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
 
 var app = express();
+const port = process.env.PORT || 3000; // this sets up for Heroku
 
 app.use(bodyParser.json());
 
@@ -51,10 +52,26 @@ app.get('/todos/:id', (req, res) => {
         }
         return res.send({abc});
     }).catch((err) => res.status(400).send());
-})
+});
 
-app.listen(3000, () => {
-    console.log('Started on port 3000');
+app.delete('/todos/:id', (req, res) => {
+    var id = req.params.id;
+    if(!ObjectID.isValid(id)) {
+        console.log('ID is not valid');
+        return res.status(404).send();
+    }
+    Todo.findByIdAndRemove(id).then((efg) => {
+        if (!efg) {
+            console.log('Id not found');
+            return res.status(404).send();
+        }
+        return res.send({efg});
+    }).catch((err) => res.status(400).send());
+
+});
+
+app.listen(port, () => {
+    console.log(`Started on port ${port}`);
 
 });
 
