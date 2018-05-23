@@ -1,5 +1,6 @@
-var bodyParser = require('body-parser');
-var express = require('express');
+const _ = require('lodash');
+const bodyParser = require('body-parser');
+const express = require('express');
 const {ObjectID} = require('mongodb');
 
 var {mongoose} = require('./db/mongoose');
@@ -68,6 +69,34 @@ app.delete('/todos/:id', (req, res) => {
         return res.send({efg});
     }).catch((err) => res.status(400).send());
 
+});
+
+app.patch('/todos/:id', (req, res) => {
+    var id = req.params.id;
+    var body = _.pick(req.body, ['text', 'completed']);
+    if(!ObjectID.isValid(id)) {
+        console.log('ID is not valid');
+        return res.status(404).send();
+    }
+    if(_.isBoolean(body.completed) && body.completed) {
+        body.completedAt = new Date().getTime();
+    } else {
+        body.completed = false;
+        body.completedAt = null; // this will remove the  value from the database, set it to null
+    }
+
+    // normally $set should be written as $set:{name : 'Jen'}, but the body is already in that form
+    // {new:true} will written the update object, similar to returnOriginal:false in mongodb world
+    Todo.findByIdAndUpdate(id, {$set: body},{new: true})
+    .then((todo) => {
+        if (!todo) {
+            return res.status(404).send();
+        }
+        // since we have already update the document with the updated value, we are ready to send out
+        res.send({todo});
+    }).catch((err) => {
+        res.status(400).send();
+    }); 
 });
 
 app.listen(port, () => {
